@@ -1,6 +1,6 @@
 package demo;
 
-import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,12 +53,19 @@ public class Tweet {
                 '}';
     }
 
-    protected static Tweet convertMaptoTweet(Map<String, String> tweetMap) {
+    public static Map<String, String> convertTweetToMap(Tweet tweet) {
+        Map<String, String> tweetMap = new HashMap<String, String>();
+        tweetMap.put("createdAt", tweet.createdAt);
+        tweetMap.put("text", tweet.getText());
+        tweetMap.put("screen_name", tweet.getScreenName());
+        return tweetMap;
+    }
+    public static Tweet convertMaptoTweet(Map<String, String> tweetMap) {
         Tweet tweet = new Tweet();
         tweet.setId(tweetMap.get(CassandraUtil.getInstance().KEY));
         Long createdAt = Long.parseLong(tweetMap.get("createdAt"));
-        //tweet.setCreatedAt(String.valueOf(createdAt));
-        tweet.setCreatedAt(String.valueOf(new Date(createdAt)));
+        tweet.setCreatedAt(String.valueOf(createdAt));
+        //tweet.setCreatedAt(String.valueOf(new Date(createdAt)));
         tweet.setScreenName(tweetMap.get("screen_name"));
         tweet.setText(tweetMap.get("text"));
         return tweet;

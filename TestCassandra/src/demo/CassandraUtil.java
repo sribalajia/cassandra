@@ -148,7 +148,7 @@ public class CassandraUtil {
         return resultList;
     }
 
-    public static void insertCompositeColumns(String columnFamily,String rowKey, Composite columnName, String columnValue) {
+    public void insertCompositeColumns(String columnFamily,String rowKey, Composite columnName, String columnValue) {
         List<HColumn<DynamicComposite, ?>> compositeColumns = new ArrayList<HColumn<DynamicComposite, ?>>();
         try {
             Mutator<String> mutator = HFactory.createMutator(getKeySpace(), StringSerializer.get());
@@ -184,17 +184,6 @@ public class CassandraUtil {
             }
             return resultsMap;
         } catch (HectorException e) {
-            throw new HectorException(e);
-        }
-    }
-    public static Keyspace getKeySpace() {
-        try {
-            CassandraHostConfigurator configurator = new CassandraHostConfigurator("127.0.0.1:9160");
-            Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", configurator);
-            Keyspace keyspaceObj = HFactory.createKeyspace("demo", cluster);
-            configurator.setMaxActive(2);
-            return keyspaceObj;
-        }catch (Exception e) {
             throw new HectorException(e);
         }
     }
@@ -269,5 +258,18 @@ public class CassandraUtil {
             throw new HectorException(e);
         }
     }
+
+    public static Keyspace getKeySpace() {
+        try {
+            CassandraHostConfigurator configurator = new CassandraHostConfigurator("127.0.0.1:9160");
+            Cluster cluster = HFactory.getOrCreateCluster("Test Cluster", configurator);
+            Keyspace keyspaceObj = HFactory.createKeyspace("twitter", cluster);
+            configurator.setMaxActive(2);
+            return keyspaceObj;
+        }catch (Exception e) {
+            throw new HectorException(e);
+        }
+    }
+
 
 }
